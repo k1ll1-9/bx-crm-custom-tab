@@ -1,27 +1,39 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Test\Crmgrid;
 
 use Bitrix\Main\Entity\DataManager;
 use Bitrix\Main\Entity;
+use Bitrix\Main\SystemException;
 
+/**
+ *
+ */
 class EmployeeTable extends DataManager
 {
-    public static function getTableName()
+    /**
+     * @return string
+     */
+    public static function getTableName(): string
     {
         return "test_crmgrid_employee_table";
     }
 
-    public static function getMap()
+    /**
+     * @return array
+     * @throws SystemException
+     */
+    public static function getMap(): array
     {
-        return [
-            new Entity\IntegerField(
-                "ID",
-                [
-                    "primary" => true,
-                    "autocomplete" => true,
-                ]
-            ),
+        return [new Entity\IntegerField(
+            "ID",
+            [
+                "primary" => true,
+                "autocomplete" => true,
+            ]
+        ),
             new Entity\BooleanField(
                 'ACTIVE',
                 [

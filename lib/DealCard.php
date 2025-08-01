@@ -1,12 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Test\Crmgrid;
 
 use Bitrix\Main\Event;
 use Bitrix\Main\EventResult;
 
+/**
+ *
+ */
 class DealCard
 {
+    /**
+     * @param Event $event
+     * @return EventResult
+     */
     public static function addTab(Event $event): EventResult
     {
         $tabs = $event->getParameter('tabs');

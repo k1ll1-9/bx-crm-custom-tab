@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Test\Crmgrid;
 
 use Bitrix\Main\Localization\Loc;
@@ -7,10 +9,17 @@ use Bitrix\Main\Grid\Options as GridOptions;
 use Bitrix\Main\UI\Filter\Options as FilterOptions;
 use Bitrix\Main\UI\PageNavigation;
 
+/**
+ *
+ */
 class Grid
 {
+
     const string GRID_ID = 'CRM_DEAL_CUSTOM_GRID';
 
+    /**
+     * @return array[]
+     */
     public static function getHeaders(): array
     {
 
@@ -54,7 +63,15 @@ class Grid
         ];
     }
 
-    public static function getRows(array $filter,PageNavigation $nav): array
+    /**
+     * @param array $filter
+     * @param PageNavigation $nav
+     * @return array
+     * @throws \Bitrix\Main\ArgumentException
+     * @throws \Bitrix\Main\ObjectPropertyException
+     * @throws \Bitrix\Main\SystemException
+     */
+    public static function getRows(array $filter, PageNavigation $nav): array
     {
         $employeesRes = EmployeeTable::getList([
                 'select' => ['*'],
@@ -82,6 +99,9 @@ class Grid
 
     }
 
+    /**
+     * @return string[]
+     */
     public static function getSort(): array
     {
         $grid = new GridOptions(self::GRID_ID);
@@ -90,6 +110,11 @@ class Grid
         return $sort ?: ['ID' => 'asc'];
     }
 
+    /**
+     * Контролы фильтра
+     *
+     * @return array[]
+     */
     public static function getFilterBox(): array
     {
         return [
@@ -126,6 +151,11 @@ class Grid
         ];
     }
 
+    /**
+     * Значения фильтра
+     *
+     * @return array
+     */
     public static function getFilterVars() :array
     {
         $filterOption = new FilterOptions(self::GRID_ID);
@@ -162,6 +192,9 @@ class Grid
     }
 
 
+    /**
+     * @return PageNavigation
+     */
     public static function getNav(): PageNavigation
     {
         $gridOptions = new GridOptions(Grid::GRID_ID);

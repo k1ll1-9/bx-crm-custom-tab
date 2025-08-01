@@ -1,12 +1,17 @@
 <?php
 
 use Bitrix\Main\Application;
+use Bitrix\Main\ArgumentException;
+use Bitrix\Main\ArgumentNullException;
 use Bitrix\Main\Config\Option;
+use Bitrix\Main\DB\SqlQueryException;
 use Bitrix\Main\Loader;
 use Bitrix\Main\Context;
 use Bitrix\Main\EventManager;
+use Bitrix\Main\LoaderException;
 use Bitrix\Main\Localization\Loc;
 use Bitrix\Main\ModuleManager;
+use Bitrix\Main\SystemException;
 use Bitrix\Main\Type\DateTime;
 use Test\CrmGrid\EmployeeTable;
 
@@ -14,9 +19,15 @@ Loc::loadMessages(__FILE__);
 
 require_once __DIR__ . '/../vendor/autoload.php';
 
+/**
+ *
+ */
 class test_crmgrid extends CModule
 {
 
+    /**
+     *
+     */
     function __construct()
     {
         $arModuleVersion = [];
@@ -34,7 +45,10 @@ class test_crmgrid extends CModule
         $this->MODULE_GROUP_RIGHTS = "N";
     }
 
-    function DoInstall()
+    /**
+     * @return void
+     */
+    function DoInstall(): void
     {
         global $APPLICATION;
 
@@ -46,7 +60,14 @@ class test_crmgrid extends CModule
         $APPLICATION->IncludeAdminFile(Loc::getMessage("TEST_INSTALL_TITLE"), __DIR__ . "/step.php");
     }
 
-    function DoUninstall()
+    /**
+     * @return void
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws SqlQueryException
+     * @throws LoaderException
+     */
+    function DoUninstall(): void
     {
         global $APPLICATION;
 
@@ -70,7 +91,13 @@ class test_crmgrid extends CModule
     }
 
 
-    function installDB()
+    /**
+     * @return void
+     * @throws ArgumentException
+     * @throws LoaderException
+     * @throws SystemException
+     */
+    function installDB(): void
     {
         Loader::includeModule($this->MODULE_ID);
 
@@ -80,7 +107,14 @@ class test_crmgrid extends CModule
 
     }
 
-    function unInstallDB()
+    /**
+     * @return void
+     * @throws ArgumentException
+     * @throws ArgumentNullException
+     * @throws SqlQueryException
+     * @throws LoaderException
+     */
+    function unInstallDB(): void
     {
         Loader::includeModule($this->MODULE_ID);
 
@@ -89,7 +123,10 @@ class test_crmgrid extends CModule
         Option::delete($this->MODULE_ID);
     }
 
-    function installEvents()
+    /**
+     * @return void
+     */
+    function installEvents(): void
     {
         EventManager::getInstance()->registerEventHandler(
             'crm',
@@ -100,7 +137,10 @@ class test_crmgrid extends CModule
         );
     }
 
-    function unInstallEvents()
+    /**
+     * @return void
+     */
+    function unInstallEvents(): void
     {
         EventManager::getInstance()->unRegisterEventHandler(
             'crm',
@@ -111,25 +151,12 @@ class test_crmgrid extends CModule
         );
     }
 
-    function installFiles()
-    {
-        /*        $this->unInstallFiles();
-
-                $res = CopyDirFiles(
-                    __DIR__ . "/components",
-                    $_SERVER["DOCUMENT_ROOT"] . "/bitrix/components",
-                    true, // Перезаписывает файлы
-                    true  // Копирует рекурсивно
-                );*/
-
-    }
-
-    function unInstallFiles()
-    {
-
-    }
-
-    function addTestData(int $count = 50)
+    /**
+     * @param int $count
+     * @return void
+     * @throws \Bitrix\Main\ObjectException
+     */
+    function addTestData(int $count = 50): void
     {
         $faker = Faker\Factory::create();
 
@@ -146,6 +173,4 @@ class test_crmgrid extends CModule
 
         }
     }
-
-
 }
